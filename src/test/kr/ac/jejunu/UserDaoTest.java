@@ -15,7 +15,8 @@ public class UserDaoTest {
 
     @Before
     public void setup(){
-        userDao=daoFactory.getUserDao();
+        daoFactory = new DaoFactory();
+        userDao = daoFactory.getUserDao();
 //        jejuuserDao  = new JejuUserDao(new JejuConnectionMaker());
 //        hallaUserDao  = new HallaUserDao();
     }
