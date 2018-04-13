@@ -39,5 +39,4 @@ public class DaoFactory {
         dataSource.setPassword(password);
         return dataSource;
     }
-
 }
