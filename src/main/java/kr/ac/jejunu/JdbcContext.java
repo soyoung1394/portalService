@@ -1,4 +1,6 @@
 package kr.ac.jejunu;
+import lombok.Cleanup;
+
 import javax.sql.DataSource;
 import java.sql.*;
 
@@ -10,39 +12,18 @@ public class JdbcContext {
     }
 
     User jdbcContextForGet(StatementStrategy statementStrategy) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         User user = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = statementStrategy.makeStatement(connection);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setPassword(resultSet.getString("password"));
-            }
-        } finally {
-            if (resultSet != null)
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            if (preparedStatement != null)
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            if (connection != null)
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        @Cleanup
+        Connection connection = dataSource.getConnection();
+        @Cleanup
+        PreparedStatement preparedStatement = statementStrategy.makeStatement(connection);
+        @Cleanup
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setName(resultSet.getString("name"));
+            user.setPassword(resultSet.getString("password"));
         }
         return user;
     }
