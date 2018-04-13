@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class InsertUserStatementStragegy implements StatementStrategy {
+public class InsertUserStatementStrategy implements StatementStrategy {
     private User user;
-    public InsertUserStatementStragegy(User user) {
+    public InsertUserStatementStrategy(User user) {
         this.user=user;
     }
 
